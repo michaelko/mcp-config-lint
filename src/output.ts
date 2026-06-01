@@ -1,4 +1,6 @@
+import { readFileSync } from "node:fs";
 import { relative } from "node:path";
+import { buildJsonPointerLineMap, lineForPointer } from "./pointer-location.js";
 import type { Finding, ScanResult, Severity } from "./types.js";
 
 const severityRank: Record<Severity, number> = {
@@ -66,6 +68,7 @@ export function renderJson(result: ScanResult): string {
 export function renderSarif(result: ScanResult, cwd = process.cwd()): string {
   const findings = [...result.parseErrors, ...result.findings];
   const rules = new Map<string, Finding>();
+  const locationCache = new Map<string, Map<string, number>>();
   for (const finding of findings) {
     rules.set(finding.ruleId, finding);
   }
@@ -100,7 +103,7 @@ export function renderSarif(result: ScanResult, cwd = process.cwd()): string {
                     uri: (relative(cwd, finding.filePath) || finding.filePath).replaceAll("\\", "/")
                   },
                   region: {
-                    startLine: 1
+                    startLine: startLineForFinding(finding, locationCache)
                   }
                 },
                 logicalLocations: finding.serverName
@@ -127,6 +130,20 @@ export function renderSarif(result: ScanResult, cwd = process.cwd()): string {
     null,
     2
   );
+}
+
+function startLineForFinding(finding: Finding, locationCache: Map<string, Map<string, number>>): number {
+  let locations = locationCache.get(finding.filePath);
+  if (!locations) {
+    try {
+      locations = buildJsonPointerLineMap(readFileSync(finding.filePath, "utf8"));
+    } catch {
+      locations = new Map<string, number>([["", 1]]);
+    }
+    locationCache.set(finding.filePath, locations);
+  }
+
+  return lineForPointer(finding.pointer, locations) ?? 1;
 }
 
 function summarize(result: ScanResult) {
