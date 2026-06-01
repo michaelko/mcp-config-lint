@@ -1,0 +1,22 @@
+name: Bug report
+description: Report incorrect behavior or a false positive/negative.
+title: "bug: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: Minimal MCP config
+      render: json
+  - type: textarea
+    id: output
+    attributes:
+      label: mcp-lint output
+      render: text

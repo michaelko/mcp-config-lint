@@ -1,0 +1,12 @@
+{
+  // Example with a pinned package and narrow project scope.
+  "mcpServers": {
+    "repo-files": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem@2025.4.1", "./"]
+    },
+    "remote-docs": {
+      "url": "https://mcp.example.com/sse"
+    }
+  }
+}

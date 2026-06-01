@@ -1,0 +1,57 @@
+{
+  "name": "mcp-config-lint",
+  "version": "0.1.0",
+  "description": "Security linter for Model Context Protocol (MCP) configuration files.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "mcp-lint": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "examples",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "check": "npm run build && npm test",
+    "prepare": "npm run build",
+    "prepack": "npm run check"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "security",
+    "linter",
+    "cli",
+    "ai-agents"
+  ],
+  "author": "Michael Ko",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michaelko/mcp-config-lint.git"
+  },
+  "bugs": {
+    "url": "https://github.com/michaelko/mcp-config-lint/issues"
+  },
+  "homepage": "https://github.com/michaelko/mcp-config-lint#readme",
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.14"
+  }
+}
