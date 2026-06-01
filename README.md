@@ -75,6 +75,16 @@ mcp-lint: 3 findings across 1 file.
 | MCP009 | High | Non-local `http://` URLs |
 | MCP010 | Low/Critical | Risky host environment expansion such as `$TOKEN`, `${SECRET}`, `%PASSWORD%`, or shell command substitution |
 
+## Safe Configuration Patterns
+
+The examples in `examples/safe-*.mcp.jsonc` show patterns intended to stay free of high-severity findings:
+
+- Pin package-based servers, for example `@modelcontextprotocol/server-filesystem@2025.4.1`.
+- Pin container images with stable tags or digests; avoid `latest`, `main`, and untagged images.
+- Grant narrow repository-relative filesystem paths such as `./src`, `./docs`, or `./workspace`.
+- Prefer HTTPS for remote MCP endpoints.
+- Keep secrets out of config files. Use documented environment setup outside the MCP config instead of literal credentials.
+
 ## GitHub Actions
 
 ```yaml

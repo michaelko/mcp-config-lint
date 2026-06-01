@@ -1,0 +1,17 @@
+{
+  // Pinned container image, read-only project mount, and explicit command arguments.
+  "mcpServers": {
+    "containerized-search": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "--volume",
+        "./workspace:/workspace:ro",
+        "ghcr.io/example/mcp-search:1.4.2",
+        "--root",
+        "/workspace"
+      ]
+    }
+  }
+}

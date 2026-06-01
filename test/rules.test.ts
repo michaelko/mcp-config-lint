@@ -63,4 +63,13 @@ describe("scan", () => {
     expect(result.files).toEqual([configPath]);
     expect(result.findings.some((finding) => finding.ruleId === "MCP001")).toBe(true);
   });
+
+  it("keeps safe examples free of high-severity findings", async () => {
+    const result = await scan(["examples"], process.cwd());
+    const highSeveritySafeFindings = result.findings.filter((finding) => {
+      return finding.filePath.includes("/safe") && (finding.severity === "high" || finding.severity === "critical");
+    });
+
+    expect(highSeveritySafeFindings).toEqual([]);
+  });
 });

@@ -1,0 +1,8 @@
+{
+  // HTTPS remote endpoint with no inline secrets or shell expansion.
+  "mcpServers": {
+    "docs-index": {
+      "url": "https://mcp.example.com/sse"
+    }
+  }
+}

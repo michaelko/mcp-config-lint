@@ -1,0 +1,14 @@
+{
+  // Pinned package and narrow repository-relative paths.
+  "mcpServers": {
+    "project-files": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem@2025.4.1",
+        "./src",
+        "./docs"
+      ]
+    }
+  }
+}
