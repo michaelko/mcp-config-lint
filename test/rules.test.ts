@@ -1,5 +1,5 @@
 import { mkdtemp, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 import { tmpdir } from "node:os";
 import { describe, expect, it } from "vitest";
 import { scan } from "../src/scanner.js";
@@ -65,11 +65,17 @@ describe("scan", () => {
   });
 
   it("keeps safe examples free of high-severity findings", async () => {
-    const result = await scan(["examples"], process.cwd());
-    const highSeveritySafeFindings = result.findings.filter((finding) => {
-      return finding.filePath.includes("/safe") && (finding.severity === "high" || finding.severity === "critical");
+    const safeExamples = ["safe-container.mcp.jsonc", "safe-filesystem.mcp.jsonc", "safe-remote.mcp.jsonc"];
+    const result = await scan(
+      safeExamples.map((example) => join("examples", example)),
+      process.cwd()
+    );
+    const highSeverityFindings = result.findings.filter((finding) => {
+      return finding.severity === "high" || finding.severity === "critical";
     });
 
-    expect(highSeveritySafeFindings).toEqual([]);
+    expect(result.files.map((file) => basename(file)).sort()).toEqual(safeExamples.sort());
+    expect(result.parseErrors).toEqual([]);
+    expect(highSeverityFindings).toEqual([]);
   });
 });

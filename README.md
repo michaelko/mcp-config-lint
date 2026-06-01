@@ -51,10 +51,10 @@ Options:
 ## Example Output
 
 ```text
-mcp-lint: 3 findings across 1 file.
+mcp-lint: 6 findings across 1 file.
 
 [CRITICAL] MCP003 Remote fetch execution
-  examples/unsafe.mcp.jsonc server=installer /mcpServers/installer
+  examples/unsafe.mcp.jsonc server=installer /mcpServers/installer/args
   Server appears to download remote content and execute it.
   Fix: Vendor the server, pin a package version, or install through a reviewed package manager step outside the MCP config.
 ```
