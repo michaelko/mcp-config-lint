@@ -28,7 +28,7 @@ npx mcp-lint
 
 ```bash
 mcp-lint
-mcp-lint ~/.config/Claude/claude_desktop_config.json
+mcp-lint "$HOME/Library/Application Support/Claude/claude_desktop_config.json"
 mcp-lint . --format json
 mcp-lint . --format sarif --fail-on medium
 mcp-lint . --quiet
@@ -37,6 +37,20 @@ mcp-lint --version
 ```
 
 When no path is provided, `mcp-lint` discovers common files such as `mcp.json`, `.mcp.jsonc`, `.cursor/mcp.json`, `.vscode/mcp.json`, and `claude_desktop_config.json`.
+
+## Client Config Discovery
+
+You can scan a single client config file or a directory that contains supported JSON/JSONC MCP config files. The examples below are read-only lint commands; replace user names and workspace paths with your local values.
+
+| Client | Common config locations | Example commands |
+| --- | --- | --- |
+| Claude Desktop | macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`<br>Windows: `%APPDATA%\Claude\claude_desktop_config.json` | macOS/Linux shell:<br>`mcp-lint "$HOME/Library/Application Support/Claude/claude_desktop_config.json"`<br>PowerShell:<br>`mcp-lint "$env:APPDATA\Claude\claude_desktop_config.json"` |
+| Cursor | Global: `~/.cursor/mcp.json`<br>Project: `.cursor/mcp.json` | `mcp-lint ~/.cursor/mcp.json`<br>`mcp-lint .cursor/mcp.json` |
+| VS Code | Workspace MCP file: `.vscode/mcp.json`<br>Workspace settings file: `.vscode/settings.json` | `mcp-lint .vscode/mcp.json`<br>`mcp-lint .vscode/settings.json` |
+| Windsurf | Global: `~/.codeium/windsurf/mcp_config.json`<br>Project: `.windsurf/mcp_config.json` | `mcp-lint ~/.codeium/windsurf/mcp_config.json`<br>`mcp-lint .windsurf/mcp_config.json` |
+| Continue | JSON/JSONC MCP files such as `.continue/mcpServers.json`, `.continue/config.json`, or `.continue/config.jsonc` | `mcp-lint .continue/mcpServers.json`<br>`mcp-lint .continue/config.jsonc` |
+
+`mcp-lint` scans JSON and JSONC files. If a client stores MCP settings only in YAML or another format, lint the equivalent JSON/JSONC MCP server file when one is available.
 
 Options:
 
