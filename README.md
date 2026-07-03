@@ -61,19 +61,19 @@ mcp-lint: 6 findings across 1 file.
 
 ## Rules
 
-| Rule | Severity | What it checks |
-| --- | --- | --- |
-| MCP000 | Critical | Invalid JSON/JSONC syntax |
-| MCP001 | High | Server without `command` or `url` |
-| MCP002 | High/Critical | Shell-based execution such as `bash -c` |
-| MCP003 | Critical | Remote fetch piped into a shell |
-| MCP004 | High | Unpinned package execution through `npx`, `uvx`, `bunx`, `pnpm`, or `yarn` |
-| MCP005 | High | Unpinned container images |
-| MCP006 | Critical | Hardcoded secrets in env or headers |
-| MCP007 | High | Secret-like CLI arguments |
-| MCP008 | High | Broad filesystem access such as `/`, `~`, `$HOME`, OS roots, or root container mounts |
-| MCP009 | High | Non-local `http://` URLs |
-| MCP010 | Low/Critical | Risky host environment expansion such as `$TOKEN`, `${SECRET}`, `%PASSWORD%`, or shell command substitution |
+| Rule | Severity | Title | What it checks |
+| --- | --- | --- | --- |
+| MCP000 | Critical | Invalid JSON/JSONC | Invalid JSON/JSONC syntax |
+| MCP001 | High | Missing runnable target | Server without `command` or `url` |
+| MCP002 | High/Critical | Shell execution | Shell-based execution such as `bash -c` |
+| MCP003 | Critical | Remote fetch execution | Remote fetch piped into a shell |
+| MCP004 | High | Unpinned package execution | Unpinned package execution through `npx`, `uvx`, `bunx`, `pnpm`, or `yarn` |
+| MCP005 | High | Unpinned container image | Unpinned container images |
+| MCP006 | Critical | Hardcoded secret | Hardcoded secrets in env or headers |
+| MCP007 | High | Secret-like CLI argument | Secret-like CLI arguments |
+| MCP008 | High | Broad filesystem access | Broad filesystem access such as `/`, `~`, `$HOME`, OS roots, or root container mounts |
+| MCP009 | High | Insecure remote URL | Non-local `http://` URLs |
+| MCP010 | Low/Medium/Critical | Risky environment expansion | Risky host environment expansion such as `$TOKEN`, `${SECRET}`, `%PASSWORD%`, or shell command substitution |
 
 ## Safe Configuration Patterns
 
@@ -131,6 +131,7 @@ node dist/cli.js examples/unsafe.mcp.jsonc
 ## Contributing
 
 Issues and pull requests are welcome. New rules should include a fixture, a test, and a README entry that explains the risk without overstating certainty.
+When adding or changing a rule, update the README rule table with the rule ID, title, and possible severities so the catalog consistency test keeps documentation in sync with emitted findings.
 
 ## License
 
