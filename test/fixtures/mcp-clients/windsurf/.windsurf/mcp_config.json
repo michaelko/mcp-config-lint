@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "remote-http-mcp": {
+      "serverUrl": "http://mcp.example.test/mcp",
+      "headers": {
+        "X-Workspace": "${env:WORKSPACE_ID}"
+      }
+    }
+  }
+}
