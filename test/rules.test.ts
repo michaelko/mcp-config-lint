@@ -78,4 +78,44 @@ describe("scan", () => {
     expect(result.parseErrors).toEqual([]);
     expect(highSeverityFindings).toEqual([]);
   });
+
+  it("reports floating Git and URL package specs across package runners", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "mcp-lint-"));
+    const configPath = join(dir, "mcp.json");
+    await writeFile(
+      configPath,
+      JSON.stringify({
+        mcpServers: {
+          npxGit: {
+            command: "npx",
+            args: ["-y", "git+https://github.com/example/mcp-server.git"]
+          },
+          uvxGithub: {
+            command: "uvx",
+            args: ["github:example/mcp-server"]
+          },
+          bunxUrl: {
+            command: "bunx",
+            args: ["https://github.com/example/mcp-server/archive/refs/heads/main.tar.gz"]
+          },
+          pnpmPinnedSha: {
+            command: "pnpm",
+            args: ["dlx", "github:example/mcp-server#5f2d8e1"]
+          },
+          yarnPinnedTag: {
+            command: "yarn",
+            args: ["dlx", "git+https://github.com/example/mcp-server.git#v1.2.3"]
+          }
+        }
+      })
+    );
+
+    const result = await scan([configPath], dir);
+    const floatingFindings = result.findings
+      .filter((finding) => finding.ruleId === "MCP004")
+      .map((finding) => finding.serverName)
+      .sort();
+
+    expect(floatingFindings).toEqual(["bunxUrl", "npxGit", "uvxGithub"]);
+  });
 });

@@ -67,7 +67,7 @@ mcp-lint: 6 findings across 1 file.
 | MCP001 | High | Server without `command` or `url` |
 | MCP002 | High/Critical | Shell-based execution such as `bash -c` |
 | MCP003 | Critical | Remote fetch piped into a shell |
-| MCP004 | High | Unpinned package execution through `npx`, `uvx`, `bunx`, `pnpm`, or `yarn` |
+| MCP004 | High | Unpinned package, Git, or URL execution through `npx`, `uvx`, `bunx`, `pnpm`, or `yarn` |
 | MCP005 | High | Unpinned container images |
 | MCP006 | Critical | Hardcoded secrets in env or headers |
 | MCP007 | High | Secret-like CLI arguments |
@@ -80,6 +80,7 @@ mcp-lint: 6 findings across 1 file.
 The examples in `examples/safe-*.mcp.jsonc` show patterns intended to stay free of high-severity findings:
 
 - Pin package-based servers, for example `@modelcontextprotocol/server-filesystem@2025.4.1`.
+- Pin Git or URL package specs to a commit SHA, digest, or stable tag rather than a moving branch.
 - Pin container images with stable tags or digests; avoid `latest`, `main`, and untagged images.
 - Grant narrow repository-relative filesystem paths such as `./src`, `./docs`, or `./workspace`.
 - Prefer HTTPS for remote MCP endpoints.

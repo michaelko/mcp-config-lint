@@ -61,7 +61,7 @@ function detectUnpinnedPackageExecution(server: ServerDefinition, filePath: stri
   if (["npx", "pnpm", "yarn", "bunx", "uvx"].includes(command)) {
     const candidate = firstPackageArg(command, args);
     if (candidate && !isPinnedPackage(candidate)) {
-      findings.push(finding(filePath, server, "MCP004", "Unpinned package execution", "high", `Server runs ${candidate} through ${command} without an explicit version.`, "Pin packages with an immutable version, digest, or reviewed local path.", candidate, `${server.pointer}/args`));
+      findings.push(finding(filePath, server, "MCP004", "Unpinned package execution", "high", `Server runs ${candidate} through ${command} without an explicit version or immutable ref.`, "Pin packages with an immutable version, commit SHA, digest, or reviewed local path.", candidate, `${server.pointer}/args`));
     }
   }
 
@@ -239,11 +239,36 @@ function isPinnedImage(value: string): boolean {
 }
 
 function isPinnedPackage(value: string): boolean {
-  if (value.startsWith(".") || value.startsWith("/") || value.includes("://")) {
+  if (value.startsWith(".") || value.startsWith("/")) {
     return true;
+  }
+  if (isGitOrUrlPackageSpec(value)) {
+    return hasImmutableGitOrUrlRef(value);
   }
   const withoutScope = value.startsWith("@") ? value.slice(1) : value;
   return /@(?:\d+\.\d+\.\d+|[a-f0-9]{7,}|sha256:|v?\d)/i.test(withoutScope);
+}
+
+function isGitOrUrlPackageSpec(value: string): boolean {
+  return /^(?:git\+)?https?:\/\//i.test(value) || /^github:[^/]+\/[^#]+/i.test(value) || /^git(?:\+ssh)?:/i.test(value) || /^git@/i.test(value);
+}
+
+function hasImmutableGitOrUrlRef(value: string): boolean {
+  if (/sha256:[a-f0-9]{32,}/i.test(value)) {
+    return true;
+  }
+
+  const fragment = value.includes("#") ? value.slice(value.lastIndexOf("#") + 1) : "";
+  if (isStableRef(fragment)) {
+    return true;
+  }
+
+  return /(?:\/|%2F)(?:refs\/tags\/)?v?\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?(?:[/?#.]|$)/i.test(value)
+    || /(?:\/|%2F)[a-f0-9]{7,40}(?:[/?#.]|$)/i.test(value);
+}
+
+function isStableRef(value: string): boolean {
+  return /^[a-f0-9]{7,40}$/i.test(value) || /^v?\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/i.test(value);
 }
 
 function isVariableReference(value: string): boolean {
