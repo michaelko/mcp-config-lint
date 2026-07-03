@@ -38,6 +38,16 @@ mcp-lint --version
 
 When no path is provided, `mcp-lint` discovers common files such as `mcp.json`, `.mcp.jsonc`, `.cursor/mcp.json`, `.vscode/mcp.json`, and `claude_desktop_config.json`.
 
+## Client Config Shapes
+
+`mcp-lint` understands the MCP server maps used by common clients:
+
+- Claude Desktop, Cursor, Windsurf, and Continue configs with `mcpServers`.
+- VS Code `mcp.json` configs with top-level `servers`.
+- VS Code dev container configs with nested `customizations.vscode.mcp.servers` when the file is provided explicitly.
+
+Remote server entries may use either `url` or `serverUrl`; both are linted for insecure `http://` endpoints.
+
 Options:
 
 | Option | Description |
@@ -64,7 +74,7 @@ mcp-lint: 6 findings across 1 file.
 | Rule | Severity | What it checks |
 | --- | --- | --- |
 | MCP000 | Critical | Invalid JSON/JSONC syntax |
-| MCP001 | High | Server without `command` or `url` |
+| MCP001 | High | Server without `command`, `url`, or `serverUrl` |
 | MCP002 | High/Critical | Shell-based execution such as `bash -c` |
 | MCP003 | Critical | Remote fetch piped into a shell |
 | MCP004 | High | Unpinned package execution through `npx`, `uvx`, `bunx`, `pnpm`, or `yarn` |

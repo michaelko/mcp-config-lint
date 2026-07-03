@@ -1,0 +1,15 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+  "customizations": {
+    "vscode": {
+      "mcp": {
+        "servers": {
+          "devtools": {
+            "command": "npx",
+            "args": ["-y", "@modelcontextprotocol/server-everything"]
+          }
+        }
+      }
+    }
+  }
+}

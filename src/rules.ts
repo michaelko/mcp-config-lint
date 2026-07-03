@@ -21,11 +21,11 @@ export const rules: Rule[] = [
 ];
 
 function requireRunnableTarget(server: ServerDefinition, filePath: string): Finding[] {
-  if (typeof server.value.command === "string" || typeof server.value.url === "string") {
+  if (typeof server.value.command === "string" || typeof server.value.url === "string" || typeof server.value.serverUrl === "string") {
     return [];
   }
   return [
-    finding(filePath, server, "MCP001", "Missing runnable target", "high", "Server does not define a command or url, which makes review and runtime behavior ambiguous.", "Define an explicit command for local servers or an explicit HTTPS url for remote servers.")
+    finding(filePath, server, "MCP001", "Missing runnable target", "high", "Server does not define a command, url, or serverUrl, which makes review and runtime behavior ambiguous.", "Define an explicit command for local servers or an explicit HTTPS url/serverUrl for remote servers.")
   ];
 }
 

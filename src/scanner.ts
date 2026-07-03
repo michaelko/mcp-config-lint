@@ -24,7 +24,7 @@ export async function scan(paths: string[], cwd = process.cwd()): Promise<ScanRe
       continue;
     }
 
-    const servers = extractServers(parsed.value);
+    const servers = extractServers(parsed.value, file);
     for (const server of servers) {
       for (const rule of rules) {
         findings.push(...rule(server, file));
